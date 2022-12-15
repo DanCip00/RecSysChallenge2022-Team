@@ -8,4 +8,4 @@ import Daniele.Utils.MyDataManager as dm
 import Daniele.Utils.MatrixManipulation as mm
 
 
-mm.defaultWrap(dm.getURMviews(),dm.getURMopen(),icml=dm.getICMl(),icmt=dm.getICMt(),appendICM=True)
+mm.defaultExplicitURM(dm.getURMviews(),dm.getURMopen(),icml=dm.getICMl(),icmt=dm.getICMt(),appendICM=True)
