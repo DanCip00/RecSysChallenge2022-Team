@@ -125,7 +125,11 @@ def augmentedICM(ICMt, ICMl, max_length=50):
     return sps.hstack([icm,is_series.T,is_film.T,a1,a2,a3,a4]).tocsr()
     
 
-def defaultExplicitURM(urmv, urmo, icmt=None, icml=None, beta=1,add_aug=True,appendICM=False):
+
+def defaultExplicitURM(urmv, urmo, icmt=None, icml=None, beta=1,add_aug=True,appendICM=False,normalize=True):
+    """
+    mm.defaultExplicitURM(dm.getURMviews(),dm.getURMopen(),icml=dm.getICMl(),icmt=dm.getICMt(),appendICM=True)
+    """
 
     urmv = explicitURM(urmv,slope=0.01, n_remove=2750, shrink_bias=85,bias='item', new_val = 0)
 
@@ -148,8 +152,9 @@ def defaultExplicitURM(urmv, urmo, icmt=None, icml=None, beta=1,add_aug=True,app
         icma = similaripy.normalization.bm25plus(icma)
         urm = sps.vstack([urm,icma.T])
 
-
-    return similaripy.normalization.bm25plus(urm)
+    if normalize:
+        return similaripy.normalization.bm25plus(urm)
+    return urm
 
 
 
