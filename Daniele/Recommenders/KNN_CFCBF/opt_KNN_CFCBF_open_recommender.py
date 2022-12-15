@@ -55,7 +55,7 @@ users_not_in_group = sorted_users[users_not_in_group_flag]
 evaluator_validation = EvaluatorHoldout(URMo_validation, [10],ignore_users=users_not_in_group)
 evaluator_test = EvaluatorHoldout(URMo_test, [10], ignore_users=users_not_in_group)
 
-metric_to_optimize = "MAP" 
+metric_to_optimize = "MAP_MIN_DEN" 
 
 recommender_class = KNN_CFCBF_custom
 

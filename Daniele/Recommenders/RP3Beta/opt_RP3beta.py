@@ -58,7 +58,7 @@ users_not_in_group = sorted_users[users_not_in_group_flag]
 evaluator_validation = EvaluatorHoldout(URMv_validation, [10]) #ignore_users=users_not_in_group
 evaluator_test = EvaluatorHoldout(URMv_test, [10]) #ignore_users=users_not_in_group
 
-metric_to_optimize = "MAP" 
+metric_to_optimize = "MAP_MIN_DEN" 
 
 recommender_class = RP3betaRecommender
 
@@ -88,6 +88,13 @@ recommender_input_args = SearchInputRecommenderArgs(
                 EARLYSTOPPING_KEYWORD_ARGS = {},
             )
 
+recommender_input_args_last_test = SearchInputRecommenderArgs(
+                CONSTRUCTOR_POSITIONAL_ARGS = [URM_train_validation],
+                CONSTRUCTOR_KEYWORD_ARGS = {},
+                FIT_POSITIONAL_ARGS = [],
+                FIT_KEYWORD_ARGS = {},
+                EARLYSTOPPING_KEYWORD_ARGS = {},
+            )
 
 
 output_folder_path = "Daniele/Recommenders/RP3Beta/result_experiments/"
@@ -102,7 +109,7 @@ n_random_starts = int(n_cases*0.3)
 cutoff_to_optimize = 10
 
 hyperparameterSearch.search(recommender_input_args,
-                       recommender_input_args_last_test = recommender_input_args,
+                       recommender_input_args_last_test = recommender_input_args_last_test,
                        hyperparameter_search_space = hyperparameters_range_dictionary,
                        n_cases = n_cases,
                        n_random_starts = n_random_starts,
