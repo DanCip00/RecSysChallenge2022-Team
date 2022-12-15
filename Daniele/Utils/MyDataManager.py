@@ -5,11 +5,15 @@ Module for importing directly the sparces matrices
 
 """
 import os 
-os.chdir("../..")
+import sys
+while os.path.split(os.getcwd())[1] != 'RecSysChallenge2023-Team':
+    os.chdir('..')
+sys.path.insert(1, os.getcwd())
 
+print(os.getcwd())
+import Daniele.Utils.SaveSparceMatrix as ssm
 import pandas as pd
 import scipy.sparse as sps
-import Daniele.Utils.SaveSparceMatrix as ssm
 import numpy as np
     
 
