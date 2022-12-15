@@ -8,6 +8,7 @@ import Daniele.Utils.MyDataManager as dm
 import scipy.sparse as sps
 from tqdm import tqdm
 import numpy as np
+import similaripy
 import math 
 
 def _norma_exp(urm, slope, center,verbose=False):
@@ -83,7 +84,9 @@ def augmentURM(urm,min_profile_length=20,max_profile_length=100, keep_interactio
 
 
 def augmentedICM(ICMt, ICMl, max_length=50):
-
+    """
+    N.B. la matrice finale non è normalizzata !!!
+    """
     icml = ICMl.copy()
     
     icml= icml.tocoo()
@@ -122,7 +125,7 @@ def augmentedICM(ICMt, ICMl, max_length=50):
     return sps.hstack([icm,is_series.T,is_film.T,a1,a2,a3,a4]).tocsr()
     
 
-def defaultWrap(urmv, urmo, icmt=None, icml=None, beta=1,add_aug=True,appendICM=False):
+def defaultExplicitURM(urmv, urmo, icmt=None, icml=None, beta=1,add_aug=True,appendICM=False):
 
     urmv = explicitURM(urmv,slope=0.01, n_remove=2750, shrink_bias=85,bias='item', new_val = 0)
 
@@ -142,9 +145,11 @@ def defaultWrap(urmv, urmo, icmt=None, icml=None, beta=1,add_aug=True,appendICM=
     
     if appendICM:
         icma = augmentedICM(icmt,icml)
+        icma = similaripy.normalization.bm25plus(icma)
         urm = sps.vstack([urm,icma.T])
 
-    return urm 
+
+    return similaripy.normalization.bm25plus(urm)
 
 
 
