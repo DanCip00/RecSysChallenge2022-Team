@@ -70,11 +70,12 @@ hyperparameterSearch = SearchBayesianSkopt(recommender_class,
 
 #{'topK': 96, 'alpha': 0.602322918891714, 'beta': 0.30286490950247463, 'normalize_similarity': True} -> MAP 0.0276749
 #{'topK': 93, 'alpha': 0.5450683986261076, 'beta': 0.33581240628495046, 'normalize_similarity': True} -> MAP 0.0276290
+#{'topK': 106, 'alpha': 0.6155817289031643, 'beta': 0.33427474623540737, 'normalize_similarity': True -> MAP 0.0276355
 
 hyperparameters_range_dictionary = {
-                "topK": Integer(5, 1000),
-                "alpha": Real(low = 0, high = 2, prior = 'uniform'),
-                "beta": Real(low = 0, high = 2, prior = 'uniform'),
+                "topK": Integer(5, 150),
+                "alpha": Real(low = 0, high = 1.5, prior = 'uniform'),
+                "beta": Real(low = 0, high = 1.5, prior = 'uniform'),
                 "normalize_similarity": Categorical([True]),
             }
 
