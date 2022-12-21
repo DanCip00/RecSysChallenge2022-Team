@@ -114,7 +114,7 @@ hyperparameters_range_dictionary = {
     "peso_1": Real(low = 0, high = 1, prior = 'uniform'),
     "peso_2": Real(low = 0, high = 1, prior = 'uniform'),
     "interactions_threshold": Integer(2, 20),
-    "isDefaultFitting": Categorical([True]),
+    
 
 }
 
