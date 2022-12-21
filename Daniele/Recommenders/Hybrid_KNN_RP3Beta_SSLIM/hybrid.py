@@ -93,7 +93,7 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
                 item_weights[i,:] = w1 
 
             elif interactions >= 15: # -> g. 10
-                
+
                 w1 = self.knn_rp3_recommender._compute_item_score([user_id_array[i]])
                 item_weights[i,:] = w1
 
@@ -129,7 +129,7 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
                 item_weights[i,:] = w1 
 
             else:
-            
+                print("toppop")
                 w1 = self.most_viewed._compute_item_score([user_id_array[i]])
                 item_weights[i,:] = w1 
 
