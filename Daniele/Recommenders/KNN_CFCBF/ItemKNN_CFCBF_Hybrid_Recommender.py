@@ -21,7 +21,7 @@ class KNN_CFCBF_custom(ItemKNNCBFRecommender):
     def __init__(self, urmv,urmo, ICM_train, verbose = True):
         self.urmv = urmv
         self.urmo = urmo
-        super(KNN_CFCBF_custom, self).__init__(urmv, ICM_train, verbose = verbose)
+        super(KNN_CFCBF_custom, self).__init__(urmv+urmo, ICM_train, verbose = verbose)
 
     def fit(self, ICM_weight = 1.0,beta=1.0, **fit_args):
 

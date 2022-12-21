@@ -95,10 +95,7 @@ def fit(self, alpha_knn_rp3=0.3,
 "lambda_i_sslim": Real(low = 1e-5, high = 1e-2, prior = 'log-uniform'),
 "lambda_j_sslim": Real(low = 1e-5, high = 1e-2, prior = 'log-uniform'),
 "learning_rate_sslim": Real(low = 1e-4, high = 1e-1, prior = 'log-uniform'),
-"""
-hyperparameters_range_dictionary = {
-
-    #"alpha_knn_rp3": Real(low = 0, high = 1, prior = 'uniform'),
+#"alpha_knn_rp3": Real(low = 0, high = 1, prior = 'uniform'),
     "topK_rp3beta": Integer(5, 150),
     "alpha_rp3beta": Real(low = 0, high = 1.5, prior = 'uniform'),
     "beta_rp3beta": Real(low = 0, high = 1.5, prior = 'uniform'),
@@ -109,11 +106,15 @@ hyperparameters_range_dictionary = {
     "similarity_knn": Categorical(['cosine', 'jaccard', "asymmetric"]), #"dice", "tversky"
     "normalize_knn": Categorical([True]),
     "feature_weighting_knn": Categorical(["BM25", "TF-IDF"]),
+"""
+hyperparameters_range_dictionary = {
+
 
     
     "peso_1": Real(low = 0, high = 1, prior = 'uniform'),
     "peso_2": Real(low = 0, high = 1, prior = 'uniform'),
     "interactions_threshold": Integer(2, 20),
+    "isDefaultFitting": Categorical([True]),
 
 }
 
@@ -124,7 +125,7 @@ if not os.path.exists(output_folder_path):
     os.makedirs(output_folder_path)
     
 #n_cases = 200  # using 10 as an example
-n_cases = 50000
+n_cases = 1000
 n_random_starts = int(n_cases*0.3)  
 cutoff_to_optimize = 10
 
