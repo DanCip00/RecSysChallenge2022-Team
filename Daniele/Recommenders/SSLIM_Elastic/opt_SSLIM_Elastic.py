@@ -64,6 +64,12 @@ if not os.path.exists(dir):
     dir = os.path.join(path_save,name)
     ssm.saveMatrix(dir,urm_def)
 
+    urm_def_val = mm.defaultExplicitURM(urmv=URMv_train_val,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=True,appendICM=True)
+    name="urm_def_val.csv"
+    dir = os.path.join(path_save,name)
+    ssm.saveMatrix(dir,urm_def_val)
+
+
     urm_bin = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo, normalize=False, add_aug=True)
     urm_bin.data = np.ones(len(urm_bin.data))
     name="urm_bin.csv"
@@ -84,6 +90,10 @@ else:
     name="urm_def.csv"
     dir = os.path.join(path_save,name)
     urm_def = ssm.readMatrix(dir)
+
+    name="urm_def_val.csv"
+    dir = os.path.join(path_save,name)
+    urm_def_val = ssm.readMatrix(dir)
 
     name="urm_bin.csv"
     dir = os.path.join(path_save,name)
@@ -122,7 +132,7 @@ recommender_input_args = SearchInputRecommenderArgs(
 )
 
 recommender_input_args_last_test = SearchInputRecommenderArgs(
-    CONSTRUCTOR_POSITIONAL_ARGS = [urm_def],
+    CONSTRUCTOR_POSITIONAL_ARGS = [urm_def_val],
     CONSTRUCTOR_KEYWORD_ARGS = {},
     FIT_POSITIONAL_ARGS = [],
     FIT_KEYWORD_ARGS = {},
@@ -159,5 +169,3 @@ hyperparameterSearch.search(recommender_input_args,
                        metric_to_optimize = metric_to_optimize,
                        cutoff_to_optimize = cutoff_to_optimize,
                       )
-
-
