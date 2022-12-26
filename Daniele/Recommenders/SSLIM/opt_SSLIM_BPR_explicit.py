@@ -132,3 +132,8 @@ hyperparameterSearch.search(recommender_input_args,
                       )
 
 
+
+# Risultati VM 
+# {'topK': 51, 'epochs': 15, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1e-05, 'lambda_j': 0.003215687724797301, 'learning_rate': 0.007114410195895492}
+# MAP -> 0.0078853
+

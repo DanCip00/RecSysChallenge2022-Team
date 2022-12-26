@@ -21,7 +21,7 @@ import MyDataManager as dm
 
 
 recommender = SSLIMRP3BetaKNNRecommender(dm.getURMviews(),dm.getURMopen(),dm.getICMt(),dm.getICMl())
-recommender.fit()
+recommender.fit(peso_1=0.06475010925251191,peso_2=0.027199820509343116,interactions_threshold =7)
 
 
 f = open("submission.csv", "w+")

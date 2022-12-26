@@ -48,7 +48,7 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
             
             topK_rp3beta= 89, alpha_rp3beta =0.6361002951626124, beta_rp3beta= 0.27432996564004203, normalize_similarity_rp3beta= True,
             topK_knn= 744, shrink_knn= 457, similarity_knn= 'cosine', normalize_knn= True, feature_weighting_knn='TF-IDF',
-            topK_sslim= 305, epochs_sslim=25,symmetric_sslim=True, sgd_mode_sslim = 'adam', lambda_i_sslim = 0.0008132913041259862, lambda_j_sslim=0.004889521240194745, learning_rate_sslim = 0.005381553515814384,
+            topK_sslim= 305, epochs_sslim=25,symmetric_sslim=True, sgd_mode_sslim = 'adam', lambda_i_sslim = 0.00048157278406027107, lambda_j_sslim=0.0002827394953195856, learning_rate_sslim = 0.009845463659115065,
             peso_1=0.6,peso_2=0.4,interactions_threshold =12
 
             ):
@@ -70,6 +70,7 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
         self.KNN_recommender.fit(topK= topK_knn, shrink= shrink_knn, similarity= similarity_knn, normalize= normalize_knn, feature_weighting=feature_weighting_knn)
 
         # {'topK': 305, 'epochs': 25, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0008132913041259862, 'lambda_j': 0.004889521240194745, 'learning_rate': 0.005381553515814384}
+        # {'topK': 109, 'epochs': 25, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.00048157278406027107, 'lambda_j': 0.0002827394953195856, 'learning_rate': 0.009845463659115065}
         self.sslim_recommender.fit(topK= topK_sslim, epochs=epochs_sslim,symmetric=symmetric_sslim, sgd_mode = sgd_mode_sslim, lambda_i = lambda_i_sslim, lambda_j=lambda_j_sslim, learning_rate = learning_rate_sslim)
 
         # alpha =0.3
