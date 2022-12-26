@@ -130,7 +130,7 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
                 item_weights[i,:] = w1 
 
             else:
-                print("toppop")
+                print("topPop")
                 w1 = self.most_viewed._compute_item_score([user_id_array[i]])
                 item_weights[i,:] = w1 
 
