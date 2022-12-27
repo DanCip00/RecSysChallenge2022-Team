@@ -72,12 +72,12 @@ if not os.path.exists(dir):
     dir = os.path.join(path_save,name)
     ssm.saveMatrix(dir,URMv_test)
 
-    urm_def_nn = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=True,appendICM=True,normalize=False)
+    urm_def_nn = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo,icml=ICMl,icmt=ICMt, add_aug=True,appendICM=True,normalize=False)
     name="urm_def_nn.csv"
     dir = os.path.join(path_save,name)
     ssm.saveMatrix(dir,urm_def_nn)
 
-    urm_def_val_nn = mm.defaultExplicitURM(urmv=URMv_train_val,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=True,appendICM=True,normalize=False)
+    urm_def_val_nn = mm.defaultExplicitURM(urmv=URMv_train_val,urmo=URMo,icml=ICMl,icmt=ICMt, add_aug=True,appendICM=True,normalize=False)
     name="urm_def_val_nn.csv"
     dir = os.path.join(path_save,name)
     ssm.saveMatrix(dir,urm_def_val_nn)
