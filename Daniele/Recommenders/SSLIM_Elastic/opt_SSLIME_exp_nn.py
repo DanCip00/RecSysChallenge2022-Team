@@ -72,22 +72,15 @@ if not os.path.exists(dir):
     dir = os.path.join(path_save,name)
     ssm.saveMatrix(dir,URMv_test)
 
-    urm_def = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=True,appendICM=True)
-    name="urm_def.csv"
+    urm_def_nn = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=True,appendICM=True,normalize=False)
+    name="urm_def_nn.csv"
     dir = os.path.join(path_save,name)
-    ssm.saveMatrix(dir,urm_def)
+    ssm.saveMatrix(dir,urm_def_nn)
 
-    urm_def_val = mm.defaultExplicitURM(urmv=URMv_train_val,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=True,appendICM=True)
-    name="urm_def_val.csv"
+    urm_def_val_nn = mm.defaultExplicitURM(urmv=URMv_train_val,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=True,appendICM=True,normalize=False)
+    name="urm_def_val_nn.csv"
     dir = os.path.join(path_save,name)
-    ssm.saveMatrix(dir,urm_def_val)
-
-
-    urm_bin = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo, normalize=False, add_aug=True)
-    urm_bin.data = np.ones(len(urm_bin.data))
-    name="urm_bin.csv"
-    dir = os.path.join(path_save,name)
-    ssm.saveMatrix(dir,urm_bin)
+    ssm.saveMatrix(dir,urm_def_val_nn)
 
 else:
     URMv_train=ssm.readMatrix(dir)
@@ -100,17 +93,14 @@ else:
     dir = os.path.join(path_save,name)
     URMv_validation=ssm.readMatrix(dir)
 
-    name="urm_def.csv"
+    name="urm_def_nn.csv"
     dir = os.path.join(path_save,name)
-    urm_def = ssm.readMatrix(dir)
+    urm_def_nn = ssm.readMatrix(dir)
 
-    name="urm_def_val.csv"
+    name="urm_def_val_nn.csv"
     dir = os.path.join(path_save,name)
-    urm_def_val = ssm.readMatrix(dir)
+    urm_def_val_nn = ssm.readMatrix(dir)
 
-    name="urm_bin.csv"
-    dir = os.path.join(path_save,name)
-    urm_bin = ssm.readMatrix(dir)
 
 
 
@@ -137,7 +127,7 @@ hyperparameterSearch = SearchBayesianSkopt(recommender_class,
 
 
 recommender_input_args = SearchInputRecommenderArgs(
-    CONSTRUCTOR_POSITIONAL_ARGS = [urm_def],
+    CONSTRUCTOR_POSITIONAL_ARGS = [urm_def_nn],
     CONSTRUCTOR_KEYWORD_ARGS = {},
     FIT_POSITIONAL_ARGS = [],
     FIT_KEYWORD_ARGS = {},
@@ -145,7 +135,7 @@ recommender_input_args = SearchInputRecommenderArgs(
 )
 
 recommender_input_args_last_test = SearchInputRecommenderArgs(
-    CONSTRUCTOR_POSITIONAL_ARGS = [urm_def_val],
+    CONSTRUCTOR_POSITIONAL_ARGS = [urm_def_val_nn],
     CONSTRUCTOR_KEYWORD_ARGS = {},
     FIT_POSITIONAL_ARGS = [],
     FIT_KEYWORD_ARGS = {},
@@ -153,7 +143,7 @@ recommender_input_args_last_test = SearchInputRecommenderArgs(
 )
 
 hyperparameters_range_dictionary = {
-                "topK": Integer(5, 1000),
+                "topK": Integer(5, 750),
                 "l1_ratio": Real(low = 1e-5, high = 1.0, prior = 'log-uniform'),
                 "alpha": Real(low = 1e-3, high = 1.0, prior = 'uniform'),
                 "workers":Categorical([4]),
@@ -178,7 +168,7 @@ hyperparameterSearch.search(recommender_input_args,
                        n_random_starts = n_random_starts,
                        save_model = "no",
                        output_folder_path = output_folder_path, # Where to save the results
-                       output_file_name_root = "explicit_matrix", # How to call the files
+                       output_file_name_root = "explicit_nn_matrix", # How to call the files
                        metric_to_optimize = metric_to_optimize,
                        cutoff_to_optimize = cutoff_to_optimize,
                       )
