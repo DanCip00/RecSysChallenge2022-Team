@@ -125,7 +125,7 @@ metric_to_optimize = "MAP_MIN_DEN"
 recommender_class = MultiThreadSLIM_SLIMElasticNetRecommender
 
 hyperparameterSearch = SearchBayesianSkopt(recommender_class,
-                                         evaluator_validation=evaluator_validation,
+                                         evaluator_validation=evaluator_validation,\
                                          evaluator_test=evaluator_test)
 
 
@@ -146,8 +146,8 @@ recommender_input_args_last_test = SearchInputRecommenderArgs(
 )
 
 hyperparameters_range_dictionary = {
-                "topK": Integer(5, 1000),
-                "l1_ratio": Real(low = 1e-5, high = 1.0, prior = 'log-uniform'),
+                "topK": Integer(100, 1500),
+                "l1_ratio": Real(low = 1e-7, high = 1e-3, prior = 'log-uniform'),
                 "alpha": Real(low = 1e-3, high = 1.0, prior = 'uniform'),
                 "workers":Categorical([4]),
             }
