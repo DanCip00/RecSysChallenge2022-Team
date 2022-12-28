@@ -143,9 +143,9 @@ recommender_input_args_last_test = SearchInputRecommenderArgs(
 )
 
 hyperparameters_range_dictionary = {
-                "topK": Integer(50, 3000),
-                "l1_ratio": Real(low = 1e-6, high = 1e-3, prior = 'log-uniform'),
-                "alpha": Real(low = 1e-1, high = 20, prior = 'uniform'),
+                "topK": Integer(50, 300),
+                "l1_ratio": Real(low = 1e-5, high = 1e-3, prior = 'log-uniform'),
+                "alpha": Real(low = 2.5, high = 4.5, prior = 'uniform'),
                 "workers":Categorical([5]),
             }
 
@@ -167,8 +167,10 @@ hyperparameterSearch.search(recommender_input_args,
                        n_cases = n_cases,
                        n_random_starts = n_random_starts,
                        save_model = "no",
+                       save_metadata=True,
                        output_folder_path = output_folder_path, # Where to save the results
                        output_file_name_root = "explicit_matrix", # How to call the files
                        metric_to_optimize = metric_to_optimize,
                        cutoff_to_optimize = cutoff_to_optimize,
+                       resume_from_saved = True,
                       )

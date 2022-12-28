@@ -253,7 +253,7 @@ class SearchBayesianSkopt(SearchAbstractClass):
                output_file_name_root = None,
                save_model = "best",
                save_metadata = True,
-               resume_from_saved = False,
+               resume_from_saved = True,
                recommender_input_args_last_test = None,
                evaluate_on_test = "best",
                max_total_time = None,
