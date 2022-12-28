@@ -143,7 +143,7 @@ recommender_input_args_last_test = SearchInputRecommenderArgs(
 )
 
 hyperparameters_range_dictionary = {
-                "topK": Integer(100, 1500),
+                "topK": Integer(20, 1500),
                 "l1_ratio": Real(low = 1e-6, high = 1e-3, prior = 'log-uniform'),
                 "alpha": Real(low = 1e-1, high = 10, prior = 'uniform'),
                 "workers":Categorical([5]),
