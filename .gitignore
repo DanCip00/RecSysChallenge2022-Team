@@ -3,3 +3,6 @@
 CythonCompiler/
 *__pycache__*
 .ipynb_checkpoints
+.temp*
+saved_models
+result_experiments

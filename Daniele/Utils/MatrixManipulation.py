@@ -159,3 +159,4 @@ def defaultExplicitURM(urmv, urmo, icmt=None, icml=None, beta=1,add_aug=True,app
 
 
         
+## TODO: Scrivere una funzione che rimove una parte di user e item da entrambe le matrici 

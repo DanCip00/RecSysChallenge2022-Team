@@ -40,14 +40,16 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
         self.urm_bin = urm
 
         self.urm_def = mm.defaultExplicitURM(urmv=urmv,urmo=urmo,icml=icml,icmt=icmt, normalize=True, add_aug=True,appendICM=True)
-        super().__init__(self.urmv)
+
+        self.interactions_threshold = 21
+        super().__init__(self.urm_bin)
 
     def fit(self, alpha_knn_rp3=0.3,
             
             topK_rp3beta= 89, alpha_rp3beta =0.6361002951626124, beta_rp3beta= 0.27432996564004203, normalize_similarity_rp3beta= True,
             topK_knn= 744, shrink_knn= 457, similarity_knn= 'cosine', normalize_knn= True, feature_weighting_knn='TF-IDF',
-            topK_sslim= 305, epochs_sslim=25,symmetric_sslim=True, sgd_mode_sslim = 'adam', lambda_i_sslim = 0.0008132913041259862, lambda_j_sslim=0.004889521240194745, learning_rate_sslim = 0.005381553515814384,
-            peso_1=0.6,peso_2=0.4,interactions_threshold =10
+            topK_sslim= 305, epochs_sslim=25,symmetric_sslim=True, sgd_mode_sslim = 'adam', lambda_i_sslim = 0.00048157278406027107, lambda_j_sslim=0.0002827394953195856, learning_rate_sslim = 0.009845463659115065,
+            peso_1=0.6,peso_2=0.4,interactions_threshold =12
 
             ):
         self.peso_1 = peso_1
@@ -68,11 +70,11 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
         self.KNN_recommender.fit(topK= topK_knn, shrink= shrink_knn, similarity= similarity_knn, normalize= normalize_knn, feature_weighting=feature_weighting_knn)
 
         # {'topK': 305, 'epochs': 25, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0008132913041259862, 'lambda_j': 0.004889521240194745, 'learning_rate': 0.005381553515814384}
+        # {'topK': 109, 'epochs': 25, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.00048157278406027107, 'lambda_j': 0.0002827394953195856, 'learning_rate': 0.009845463659115065}
         self.sslim_recommender.fit(topK= topK_sslim, epochs=epochs_sslim,symmetric=symmetric_sslim, sgd_mode = sgd_mode_sslim, lambda_i = lambda_i_sslim, lambda_j=lambda_j_sslim, learning_rate = learning_rate_sslim)
 
         # alpha =0.3
         self.knn_rp3_recommender.fit((1 - alpha_knn_rp3) * self.KNN_recommender.W_sparse + alpha_knn_rp3* self.rp3beta_recommender.W_sparse)
-
 
     def _compute_item_score(self,
                             user_id_array,
@@ -83,40 +85,52 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
         item_weights = np.empty([len(user_id_array), self.urm_def.shape[1]])
         for i in range(len(user_id_array)):
 
-            interactions = len(self.URM_train[user_id_array[i],:].indices)
+            interactions = len(self.urmv[user_id_array[i],:].indices)
 
-            if interactions >= 21:
-
+            if interactions >= 22:  # -> g.14
+            
                 w1 = self.rp3beta_recommender._compute_item_score([user_id_array[i]])
                 #w1 = w1 / np.linalg.norm(w1, 2)
                 item_weights[i,:] = w1 
 
-            elif interactions >= self.interactions_threshold:
+            elif interactions >= 15: # -> g. 10
+
+                w1 = self.knn_rp3_recommender._compute_item_score([user_id_array[i]])
+                item_weights[i,:] = w1
+
+            elif interactions >= self.interactions_threshold: #12 -> g. 7 
+            
                 
-                """
+                #KNN-RP3Beta-SSLIM 
                 w1 = self.knn_rp3_recommender._compute_item_score([user_id_array[i]])
                 w1 = w1 / np.linalg.norm(w1, 2)
 
                 w2 = self.sslim_recommender._compute_item_score([user_id_array[i]])
                 w2 = w2 / np.linalg.norm(w2, 2)
-                item_weights[i,:] = w2
+                item_weights[i,:] = w1*self.peso_1+w2*self.peso_2
 
+                
                 """
+                RP3Beta-KNN
                 w1 = self.rp3beta_recommender._compute_item_score([user_id_array[i]])
                 w1 = w1 / np.linalg.norm(w1, 2)
 
                 w2 = self.KNN_recommender._compute_item_score([user_id_array[i]])
                 w2 = w2 / np.linalg.norm(w2, 2)
                 item_weights[i,:] = w1*self.peso_1+w2*self.peso_2
+                """
+                #w1 = self.knn_rp3_recommender._compute_item_score([user_id_array[i]])
+                #item_weights[i,:] = w1
+                
                 
 
             elif interactions >= 1:
-
+            
                 w1 = self.sslim_recommender._compute_item_score([user_id_array[i]])
-                #w1 = w1 / np.linalg.norm(w1, 2)
                 item_weights[i,:] = w1 
 
             else:
+                print("topPop")
                 w1 = self.most_viewed._compute_item_score([user_id_array[i]])
                 item_weights[i,:] = w1 
 
