@@ -31,12 +31,29 @@ class OpenViewSplitRecommender(BaseItemSimilarityMatrixRecommender):
     lambda1 = 0.9
     lambda2 = 0.1
 
-    def __init__(self, interactions: pd.DataFrame, ICM_type, shape):
+    def __init__(
+            self,
+            urm_views: sps.csr_matrix = None,
+            urm_opens: sps.csr_matrix = None,
+            urm_all: sps.csr_matrix = None,
+            interactions: pd.DataFrame = None,
+            ICM_type = None,
+            shape = (0, 0)
+    ):
         self.shape = shape
-        self.load_urm_views(interactions)
-        self.load_urm_opens(interactions)
-        #self.load_urm_impressions(interactions)
-        self.load_urm_all(interactions)
+        if urm_views is not None:
+            self.urm_views = urm_views
+        if urm_opens is not None:
+            self.urm_opens = urm_opens
+        if urm_all is not None:
+            self.urm_all = urm_all
+
+        if interactions is not None:
+            self.load_urm_views(interactions)
+            self.load_urm_opens(interactions)
+            #self.load_urm_impressions(interactions)
+            self.load_urm_all(interactions)
+
         self.ICM_type = ICM_type
 
         super().__init__(self.urm_all)
@@ -53,7 +70,7 @@ class OpenViewSplitRecommender(BaseItemSimilarityMatrixRecommender):
 
         self.open_recommender.fit(topK=topK_opens, shrink=shrink_opens)
         self.view_recommender.fit(topK=topK_views, shrink=shrink_views)
-        self.rp3beta_recommender.fit()
+        # self.rp3beta_recommender.fit()
         #self.impressions_recommender.fit(topK=50, shrink=25)
         #self.easr_recommender.fit()
         self.most_viewed.fit()
@@ -74,24 +91,29 @@ class OpenViewSplitRecommender(BaseItemSimilarityMatrixRecommender):
                             items_to_compute=None
                             ):
         w1 = self.view_recommender._compute_item_score(user_id_array)
-        w1 = w1 / np.linalg.norm(w1, 2)
+        w1 = (w1 - w1.min()) / (w1.max() - w1.min())
+        # w1 = w1 / np.linalg.norm(w1, 2)
 
-        w2 = self.rp3beta_recommender._compute_item_score(user_id_array)
-        w2 = w2 / np.linalg.norm(w2, 2)
+        # w2 = self.rp3beta_recommender._compute_item_score(user_id_array)
+        # w2 = (w2 - w2.min()) / (w2.max() - w2.min())
+        # w2 = w2 / np.linalg.norm(w2, 2)
 
         #w_easer = self.easr_recommender._compute_item_score(user_id_array)
         #w_easer = w_easer / np.linalg.norm(w_easer, 2)
 
         #w12 = 0.5 * w1 + 0.3 * w2 + 0.2 * w_easer
-        w12 = 0.4 * w1 + 0.6 * w2
+        # w12 = 0.4 * w1 + 0.6 * w2
 
         w3 = self.open_recommender._compute_item_score(user_id_array)
-        w3 = w3 / np.linalg.norm(w3, 2)
+        # w3 = w3 / np.linalg.norm(w3, 2)
+        w3 = (w3 - w3.min()) / (w3.max() - w3.min())
 
         #w_impressions = self.impressions_recommender._compute_item_score(user_id_array)
         #w_impressions = w_impressions / np.linalg.norm(w_impressions, 2)
 
-        item_weights = (0.6 * w12) + (0.4 * w3)
+        # item_weights = (0.6 * w12) + (0.4 * w3)
+
+        item_weights = 0.6 * w1 + 0.4 * w3
 
         return item_weights
 
