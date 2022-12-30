@@ -37,7 +37,7 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
         self.URM_train = urm_train_bin
         self.urm_train_exp = urm_train_exp
 
-        super().__init__(self.URM_train_bin)
+        super().__init__(self.URM_train)
 
     def fit(self, peso_1=0.6, peso_2=0.4):
         self.peso_1 = peso_1
