@@ -5,22 +5,25 @@ while os.path.split(os.getcwd())[1] != 'RecSysChallenge2023-Team':
 sys.path.insert(1, os.getcwd())
 
 ################################# IMPORT RECOMMENDERS #################################
-from Daniele.Recommenders.Hybrid_KNN_RP3Beta_SSLIM.hybrid import SSLIMRP3BetaKNNRecommender
+from Federico.Recommenders.Hybrid_KNN_RP3Beta_SSLIM.hybrid import SSLIMRP3BetaKNNRecommender
 
 ################################## IMPORT LIBRARIES ##################################
 import scipy.sparse as sps
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
-import similaripy
-import math 
+import math
 
 import Daniele.Utils.MatrixManipulation as mm
 import Daniele.Utils.MyDataManager as dm
 
 
+URMv = dm.getURMviews()
+URMo = dm.getURMopen()
+URM_all = URMv + URMo
+URM_all.data = np.ones(len(URM_all.data))
 
-recommender = SSLIMRP3BetaKNNRecommender(dm.getURMviews(),dm.getURMopen(),dm.getICMt(),dm.getICMl())
+recommender = SSLIMRP3BetaKNNRecommender(urm_train=URM_all)
 recommender.fit()
 
 

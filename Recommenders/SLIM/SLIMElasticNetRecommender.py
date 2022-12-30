@@ -58,8 +58,8 @@ class SLIMElasticNetRecommender(BaseItemSimilarityMatrixRecommender):
                                 copy_X=False,
                                 precompute=True,
                                 selection='random',
-                                max_iter=1000,
-                                tol=1e-3)
+                                max_iter=100,
+                                tol=1e-4)
 
         URM_train = check_matrix(self.URM_train, 'csc', dtype=np.float32)
 
@@ -149,8 +149,8 @@ def _partial_fit(items, topK, alpha, l1_ratio, urm_shape, positive_only=True, sh
         copy_X=False,
         precompute=True,
         selection='random',
-        max_iter=1000,
-        tol=1e-3
+        max_iter=100,
+        tol=1e-4
     )
 
     indptr_shm = shared_memory.SharedMemory(name=shm_names[0], create=False)
