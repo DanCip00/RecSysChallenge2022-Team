@@ -5,4 +5,3 @@ CythonCompiler/
 .ipynb_checkpoints
 .temp*
 saved_models
-result_experiments
