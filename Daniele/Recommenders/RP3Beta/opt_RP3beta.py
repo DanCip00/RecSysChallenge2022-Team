@@ -73,9 +73,9 @@ hyperparameterSearch = SearchBayesianSkopt(recommender_class,
 #{'topK': 106, 'alpha': 0.6155817289031643, 'beta': 0.33427474623540737, 'normalize_similarity': True -> MAP 0.0276355
 
 hyperparameters_range_dictionary = {
-                "topK": Integer(5, 150),
-                "alpha": Real(low = 0, high = 1.5, prior = 'uniform'),
-                "beta": Real(low = 0, high = 1.5, prior = 'uniform'),
+                "topK": Integer(20, 250),
+                "alpha": Real(low = 0.4, high = 0.8, prior = 'uniform'),
+                "beta": Real(low = 1e-2, high = 1, prior = 'uniform'),
                 "normalize_similarity": Categorical([True]),
             }
 
@@ -105,7 +105,7 @@ if not os.path.exists(output_folder_path):
     os.makedirs(output_folder_path)
     
 #n_cases = 200  # using 10 as an example
-n_cases = 1500
+n_cases = 15000
 n_random_starts = int(n_cases*0.3)  
 cutoff_to_optimize = 10
 
