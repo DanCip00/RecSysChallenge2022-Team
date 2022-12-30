@@ -71,12 +71,11 @@ hyperparameterSearch = SearchBayesianSkopt(recommender_class,
 #{'topK': 96, 'alpha': 0.602322918891714, 'beta': 0.30286490950247463, 'normalize_similarity': True} -> MAP 0.0276749
 #{'topK': 93, 'alpha': 0.5450683986261076, 'beta': 0.33581240628495046, 'normalize_similarity': True} -> MAP 0.0276290
 #{'topK': 106, 'alpha': 0.6155817289031643, 'beta': 0.33427474623540737, 'normalize_similarity': True -> MAP 0.0276355
-#{'topK': 69, 'alpha': 0.6854042891733674, 'beta': 0.2763471245555947, 'normalize_similarity': True} ->  MAP 0.0282084
 
 hyperparameters_range_dictionary = {
-                "topK": Integer(50, 170),
-                "alpha": Real(low = 0.4, high = 0.9, prior = 'uniform'),
-                "beta": Real(low = 1e-2, high = 0.5, prior = 'uniform'),
+                "topK": Integer(20, 250),
+                "alpha": Real(low = 0.4, high = 0.8, prior = 'uniform'),
+                "beta": Real(low = 1e-2, high = 1, prior = 'uniform'),
                 "normalize_similarity": Categorical([True]),
             }
 
@@ -117,7 +116,7 @@ hyperparameterSearch.search(recommender_input_args,
                        n_random_starts = n_random_starts,
                        save_model = "no",
                        output_folder_path = output_folder_path, # Where to save the results
-                       output_file_name_root = "specific_search",  # How to call the files
+                       output_file_name_root = "general_views_recommender",  # How to call the files
                        metric_to_optimize = metric_to_optimize,
                        cutoff_to_optimize = cutoff_to_optimize,
                       )
