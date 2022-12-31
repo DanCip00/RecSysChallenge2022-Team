@@ -1,6 +1,5 @@
 .vscode
 .DS_Store
-CythonCompiler/
 *__pycache__*
 .ipynb_checkpoints
 .temp*
