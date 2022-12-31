@@ -46,13 +46,8 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
         self.most_viewed = TopPop(self.URM_train)
 
         self.most_viewed.fit()
-        # {'topK': 89, 'alpha': 0.6361002951626124, 'beta': 0.27432996564004203, 'normalize_similarity': True} -> opt_top
-        self.rp3beta_recommender.fit(
-            topK=89,
-            alpha=0.6361002951626124,
-            beta=0.27432996564004203,
-            normalize_similarity=True
-        )
+        # {'topK': 69, 'alpha': 0.6854042891733674, 'beta': 0.2763471245555947, 'normalize_similarity': True} -> MAP 0.0282084
+        self.rp3beta_recommender.fit( topK=69, alpha=0.6854042891733674, beta=0.2763471245555947, normalize_similarity=True )
 
         self.sslim_recommender.fit(alpha=0.003271, l1_ratio=0.006095, topK=884)
 

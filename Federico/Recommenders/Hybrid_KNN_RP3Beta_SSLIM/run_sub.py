@@ -27,7 +27,7 @@ recommender = SSLIMRP3BetaKNNRecommender(urm_train=URM_all)
 recommender.fit()
 
 
-f = open("submission.csv", "w+")
+f = open("submission_fed.csv", "w+")
 f.write("user_id,item_list\n")
 for t in tqdm(dm.getUserIDtest_df().user_id):
     recommended_items = recommender.recommend(t, cutoff=10, remove_seen_flag=True)
