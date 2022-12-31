@@ -58,7 +58,7 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
         # {'topK': 51, 'epochs': 15, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1e-05, 'lambda_j': 0.003215687724797301, 'learning_rate': 0.007114410195895492} -> MAP : 0.0078853
         self.sslim_BPR_recommender.fit(topK= 51, epochs=15,symmetric=True, sgd_mode = 'adam', lambda_i = 1e-05, lambda_j=0.003215687724797301, learning_rate = 0.007114410195895492)
 
-        alpha = 0.4
+        alpha = 0.6
         self.slim_combo.fit((1 - alpha) * self.slim_recommender.W_sparse + alpha* self.sslim_BPR_recommender.W_sparse)
 
         

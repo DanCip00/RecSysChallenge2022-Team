@@ -22,7 +22,7 @@ URMv = dm.getURMviews()
 URMo = dm.getURMopen()
 ICMt = dm.getICMt()
 ICMl = dm.getICMl()
-URM_all = URMv + URMo
+URM_all = mm.defaultExplicitURM(urmv=URMv,urmo=URMo, normalize=False, add_aug=True)
 URM_all.data = np.ones(len(URM_all.data))
 
 recommender = SSLIMRP3BetaKNNRecommender(urm_train_bin=URM_all,urm_train_exp=mm.defaultExplicitURM(urmv=URMv,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=True,appendICM=True))
