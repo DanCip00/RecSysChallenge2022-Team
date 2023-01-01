@@ -27,9 +27,9 @@ import numpy as np
 
 class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
     RECOMMENDER_NAME = "RP3BetaKNNRecommender"
-    peso_1 = 0.6
-    peso_2 = 0.4
+    alpha = 0.6
     interactions_threshold = 10
+    models_folder = "Federico/Recommenders/Hybrid_KNN_RP3Beta_SSLIM/Models/"
 
 
     def __init__(self, urm_train):
@@ -37,24 +37,34 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
 
         super().__init__(self.URM_train)
 
-    def fit(self, peso_1=0.6, peso_2=0.4):
-        self.peso_1 = peso_1
-        self.peso_2 = peso_2
-
+    def fit(self, alpha=0.6):
+        self.alpha = alpha
         self.rp3beta_recommender = RP3betaRecommender(self.URM_train)
         self.sslim_recommender = SLIMElasticNetRecommender(URM_train=self.URM_train)
         self.most_viewed = TopPop(self.URM_train)
 
-        self.most_viewed.fit()
-        # {'topK': 89, 'alpha': 0.6361002951626124, 'beta': 0.27432996564004203, 'normalize_similarity': True} -> opt_top
-        self.rp3beta_recommender.fit(
-            topK=89,
-            alpha=0.6361002951626124,
-            beta=0.27432996564004203,
-            normalize_similarity=True
-        )
+        if os.path.exists(self.models_folder + self.most_viewed.RECOMMENDER_NAME + ".zip"):
+            self.most_viewed.load_model(self.models_folder)
+        else:
+            self.most_viewed.fit()
+            self.most_viewed.save_model(self.models_folder)
 
-        self.sslim_recommender.fit(alpha=0.003271, l1_ratio=0.006095, topK=884)
+        if os.path.exists(self.models_folder + self.rp3beta_recommender.RECOMMENDER_NAME + ".zip"):
+            self.rp3beta_recommender.load_model(self.models_folder)
+        else:
+            self.rp3beta_recommender.fit(
+                topK=89,
+                alpha=0.6361002951626124,
+                beta=0.27432996564004203,
+                normalize_similarity=True
+            )
+            self.rp3beta_recommender.save_model(self.models_folder)
+
+        if os.path.exists(self.models_folder + self.sslim_recommender.RECOMMENDER_NAME + ".zip"):
+            self.sslim_recommender.load_model(self.models_folder)
+        else:
+            self.sslim_recommender.fit(alpha=0.003271, l1_ratio=0.006095, topK=884)
+            self.sslim_recommender.save_model(self.models_folder)
 
     def _compute_item_score(self, user_id_array, items_to_compute=None):
         w1 = self.rp3beta_recommender._compute_item_score(user_id_array)
@@ -63,6 +73,6 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
         w2 = self.sslim_recommender._compute_item_score(user_id_array)
         w2 = w2 / np.linalg.norm(w2, 2)
 
-        item_weights = 0.6 * w2 + 0.4 * w1
+        item_weights = self.alpha * w2 + (1 - self.alpha) * w1
 
         return item_weights
