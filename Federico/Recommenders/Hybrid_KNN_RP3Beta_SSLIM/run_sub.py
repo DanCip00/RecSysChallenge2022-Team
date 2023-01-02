@@ -24,7 +24,7 @@ URM_all = URMv + URMo
 URM_all.data = np.ones(len(URM_all.data))
 
 recommender = SSLIMRP3BetaKNNRecommender(urm_train=URM_all)
-recommender.fit()
+recommender.fit(alpha=0.2, is_sub=True)
 
 
 f = open("submission.csv", "w+")

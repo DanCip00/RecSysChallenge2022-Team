@@ -28,7 +28,7 @@ import numpy as np
 class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
     RECOMMENDER_NAME = "RP3BetaKNNRecommender"
     alpha = 0.6
-    interactions_threshold = 10
+    interactions_threshold = 15
     models_folder = "Federico/Recommenders/Hybrid_KNN_RP3Beta_SSLIM/Models/"
 
 
@@ -37,7 +37,10 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
 
         super().__init__(self.URM_train)
 
-    def fit(self, alpha=0.6):
+    def fit(self, alpha=0.6, is_sub=False):
+        if is_sub:
+            self.models_folder = self.models_folder + 'sub/'
+
         self.alpha = alpha
         self.rp3beta_recommender = RP3betaRecommender(self.URM_train)
         self.sslim_recommender = SLIMElasticNetRecommender(URM_train=self.URM_train)
@@ -73,6 +76,21 @@ class SSLIMRP3BetaKNNRecommender(BaseItemSimilarityMatrixRecommender):
         w2 = self.sslim_recommender._compute_item_score(user_id_array)
         w2 = w2 / np.linalg.norm(w2, 2)
 
-        item_weights = self.alpha * w2 + (1 - self.alpha) * w1
+        weights = self._get_alpha_per_users(user_id_array)
+        item_weights = w1
+        for i in range(len(user_id_array)):
+            item_weights[i] = weights[i] * w1[i] + (1 - weights[i]) * w2[i]
 
         return item_weights
+
+    def _get_alpha_per_users(self, user_id_array):
+        weights = np.zeros(len(user_id_array))
+
+        for i in range(len(user_id_array)):
+            num_interactions = len(self.URM_train[user_id_array[i],:].indices)
+            if num_interactions < self.interactions_threshold:
+                weights[i] = 1
+            else:
+                weights[i] = self.alpha
+
+        return weights
