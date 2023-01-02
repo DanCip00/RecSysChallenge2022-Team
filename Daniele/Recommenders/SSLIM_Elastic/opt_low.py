@@ -79,7 +79,7 @@ recommender_input_args_last_test = SearchInputRecommenderArgs(
 hyperparameters_range_dictionary = {
     "alpha": Real(low=1e-3, high=9e-3, prior='uniform'),
     "l1_ratio": Real(low=1e-3, high=9e-3, prior='uniform'),
-    "topK": Integer(750, 950),
+    "topK": Integer(850, 1100),
 }
 output_folder_path = "Daniele/Recommenders/SSLIM_Elastic/result_experiments/daniele/"
 if not os.path.exists(output_folder_path):
