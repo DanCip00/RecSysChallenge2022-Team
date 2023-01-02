@@ -28,10 +28,14 @@ ICMl=dm.getICMl()
 URM_train_validation, URM_test = split_train_in_two_percentage_global_sample(URM_all, train_percentage = 0.80)
 URM_train, URM_validation = split_train_in_two_percentage_global_sample(URM_train_validation, train_percentage = 0.80)
 
+
+icma = similaripy.normalization.bm25plus(mm.augmentedICM(ICMt, ICMl))
+URM_train = sps.vstack([URM_train,icma.T])
+
 ################################### USER GROUP ######################################
 profile_length = np.ediff1d(sps.csr_matrix(URM_all).indptr)
 sorted_users = np.argsort(profile_length)
-users_in_group = sorted_users[8*2081:]
+users_in_group = sorted_users[:8*2081]
 users_not_in_group_flag = np.isin(sorted_users, users_in_group, invert=True)
 users_not_in_group = sorted_users[users_not_in_group_flag]
 
@@ -55,12 +59,6 @@ hyperparameterSearch = SearchBayesianSkopt(recommender,
                                            evaluator_validation=evaluator_validation,
                                            evaluator_test=evaluator_test)
 
-earlystopping_keywargs = {"validation_every_n": 5,
-                          "stop_on_validation": True,
-                          "evaluator_object": evaluator_validation,
-                          "lower_validations_allowed": 4,
-                          "validation_metric": metric_to_optimize,
-                          }
 
 recommender_input_args = SearchInputRecommenderArgs(
     CONSTRUCTOR_POSITIONAL_ARGS=[URM_train],  # For a CBF model simply put [URM_train, ICM_train]
@@ -97,9 +95,9 @@ hyperparameterSearch.search(
     hyperparameter_search_space=hyperparameters_range_dictionary,
     n_cases=n_cases,
     n_random_starts=n_random_starts,
-    save_model="no",
+    save_model="best",
     output_folder_path=output_folder_path,  # Where to save the results
-    output_file_name_root="gruppi_alto",  # How to call the files
+    output_file_name_root="gruppi_basso",  # How to call the files
     metric_to_optimize=metric_to_optimize,
     cutoff_to_optimize=cutoff_to_optimize,
     resume_from_saved=True
