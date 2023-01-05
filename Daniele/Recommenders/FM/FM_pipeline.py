@@ -139,7 +139,7 @@ class LightFMCFRecommender(BaseRecommender):
         # Create a single (n_items, ) array with the item score, then copy it for every user
         items_to_compute = np.arange(self.n_items)
         
-        item_scores = - np.ones((len(user_id_array), self.n_items)) * np.inf
+        item_scores = - np.ones((len(user_id_array), self.n_items)) * np.inf 
 
         for user_index, user_id in enumerate(user_id_array):
             item_scores[user_index] = self.lightFM_model.predict(int(user_id), 
