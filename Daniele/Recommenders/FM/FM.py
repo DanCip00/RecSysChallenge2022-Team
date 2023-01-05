@@ -146,7 +146,11 @@ class LightFMCFRecommender(BaseRecommender):
 
         return item_scores
 
-recommender = LightFMCFRecommender(urm_def,sps.hstack(r_slim,r_rp3beta))
+user_popularity = np.ediff1d(sps.csr_matrix(urm_def).indptr)
+sort = np.argsort(user_popularity)
+u = sps.coo_matrix(user_popularity)
+
+recommender = LightFMCFRecommender(urm_def,sps.hstack([r_slim,r_rp3beta,u.T]))
 recommender.fit()
 
 result_df, _ = evaluator_test.evaluateRecommender(recommender)
