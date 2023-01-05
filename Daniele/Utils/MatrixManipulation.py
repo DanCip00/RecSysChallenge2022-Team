@@ -131,7 +131,7 @@ def defaultExplicitURM(urmv, urmo, icmt=None, icml=None, beta=1,add_aug=True,app
     mm.defaultExplicitURM(dm.getURMviews(),dm.getURMopen(),icml=dm.getICMl(),icmt=dm.getICMt(),appendICM=True)
     """
 
-    urmv = explicitURM(urmv,slope=0.01, n_remove=2750, shrink_bias=85,bias='item', new_val = 0)
+    urmv = explicitURM(urmv,slope=0.01, n_remove=2750, shrink_bias=85,bias='item', new_val = 1)
 
     urmo = explicitURM(urmo, slope=0.01, n_remove = 10000, shrink_bias = 25,bias='user', new_val = 30)
 

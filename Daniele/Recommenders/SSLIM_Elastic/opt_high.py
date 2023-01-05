@@ -55,12 +55,7 @@ hyperparameterSearch = SearchBayesianSkopt(recommender,
                                            evaluator_validation=evaluator_validation,
                                            evaluator_test=evaluator_test)
 
-earlystopping_keywargs = {"validation_every_n": 5,
-                          "stop_on_validation": True,
-                          "evaluator_object": evaluator_validation,
-                          "lower_validations_allowed": 4,
-                          "validation_metric": metric_to_optimize,
-                          }
+
 
 recommender_input_args = SearchInputRecommenderArgs(
     CONSTRUCTOR_POSITIONAL_ARGS=[URM_train],  # For a CBF model simply put [URM_train, ICM_train]
