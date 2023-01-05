@@ -7,7 +7,7 @@ sys.path.insert(1, os.getcwd())
 import numpy as np 
 
 
-path_save= "Daniele/Recommenders/FM/saved_models"
+path_save= "Daniele/Recommenders/FM/saved_modelsFM"
 if not os.path.exists(path_save):
     os.makedirs(path_save)
 
@@ -123,7 +123,8 @@ class LightFMCFRecommender(BaseRecommender):
             self.lightFM_model = self.lightFM_model.fit_partial(self.URM_train, 
                                         epochs=i*batch_size,
                                         user_features = self.user_features,
-                                        num_threads=n_threads)
+                                        num_threads=n_threads,
+                                        verbose=True)
             result_df, _ = evaluator_test.evaluateRecommender(self)
             print("Iter ",i,": Epochs->",batch_size*i,"\tMAP ->",result_df["MAP"].values[0])
             if result_df["MAP"].values[0] > best_map : 

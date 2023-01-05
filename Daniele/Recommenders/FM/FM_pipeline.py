@@ -7,7 +7,7 @@ sys.path.insert(1, os.getcwd())
 import numpy as np 
 
 
-path_save= "Daniele/Recommenders/FM/saved_models"
+path_save= "Daniele/Recommenders/FM/saved_modelsFM"
 if not os.path.exists(path_save):
     os.makedirs(path_save)
 
@@ -36,12 +36,12 @@ if not os.path.exists(dir):
     dir = os.path.join(path_save,name)
     ssm.saveMatrix(dir,URMv_test)
 
-    urm_def = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=True,appendICM=False)
+    urm_def = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=False,appendICM=False)
     name="urm_def.csv"
     dir = os.path.join(path_save,name)
     ssm.saveMatrix(dir,urm_def)
 
-    urm_bin = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo, normalize=False, add_aug=True)
+    urm_bin = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo, normalize=False, add_aug=False)
     urm_bin.data = np.ones(len(urm_bin.data))
     name="urm_bin.csv"
     dir = os.path.join(path_save,name)
@@ -109,13 +109,14 @@ class LightFMCFRecommender(BaseRecommender):
         super(LightFMCFRecommender, self).__init__(URM_train)
 
 
-    def fit(self, epochs = 300, alpha = 1e-6, n_factors = 10, n_threads = 4):
+    def fit(self, epochs = 300, alpha = 1e-6, n_factors = 10, n_threads = 8):
         
         # Let's fit a WARP model
         self.lightFM_model = LightFM(loss='warp',    # warp
                                      item_alpha=alpha,
-                                     no_components=n_factors)
-        batch_size = 5
+                                     no_components=n_factors,
+                                     verbose=True)
+        batch_size = 2
         best_map=-1
         best_epoch = 0 
         for i in tqdm(range (1,int(epochs/batch_size)+1)):
