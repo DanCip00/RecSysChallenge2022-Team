@@ -36,12 +36,12 @@ if not os.path.exists(dir):
     dir = os.path.join(path_save,name)
     ssm.saveMatrix(dir,URMv_test)
 
-    urm_def = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=True,appendICM=False)
+    urm_def = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo,icml=ICMl,icmt=ICMt, normalize=True, add_aug=False,appendICM=False)
     name="urm_def.csv"
     dir = os.path.join(path_save,name)
     ssm.saveMatrix(dir,urm_def)
 
-    urm_bin = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo, normalize=False, add_aug=True)
+    urm_bin = mm.defaultExplicitURM(urmv=URMv_train,urmo=URMo, normalize=False, add_aug=False)
     urm_bin.data = np.ones(len(urm_bin.data))
     name="urm_bin.csv"
     dir = os.path.join(path_save,name)
@@ -66,7 +66,7 @@ from Evaluation.Evaluator import EvaluatorHoldout
 
 evaluator_test = EvaluatorHoldout(URMv_test, cutoff_list=[10])
 
-
+#################### SLIM Elastic ####################
 from Recommenders.SLIM.SLIMElasticNetRecommender import MultiThreadSLIM_SLIMElasticNetRecommender
 name="slim_elastic_high"
 dir = os.path.join(path_save,name)
@@ -80,18 +80,33 @@ if not os.path.exists(dir+".zip"):
 else:
     slim_elastic_high.load_model(path_save,name)
 
-r_slim = slim_elastic_high._compute_item_score(range(dm.n_users))
-r_slim = sps.coo_matrix(r_slim)
+# Matice R'
+name="r_slim.csv"
+dir = os.path.join(path_save,name)
+if not os.path.exists(dir):
+    r_slim = slim_elastic_high._compute_item_score(range(dm.n_users))
+    r_slim = sps.coo_matrix(r_slim)
+    ssm.saveMatrix(dir,r_slim)
+else:
+    r_slim=ssm.readMatrix(dir)
 
 
+###################### RP3Beta ####################
 from Recommenders.GraphBased.RP3betaRecommender import RP3betaRecommender
 
 rp3beta_high = RP3betaRecommender(urm_bin)
 # {'topK': 91, 'alpha': 0.7758215673815734, 'beta': 0.2719143753442684, 'normalize_similarity': True} -> MAP 0.0.0273508
 rp3beta_high.fit( topK=91, alpha=0.7758215673815734, beta=0.2719143753442684, normalize_similarity=True )
 
-r_rp3beta = rp3beta_high._compute_item_score(range(dm.n_users))
-r_rp3beta = sps.coo_matrix(r_rp3beta)
+# Matice R''
+name="r_rp3beta.csv"
+dir = os.path.join(path_save,name)
+if not os.path.exists(dir):
+    r_rp3beta = rp3beta_high._compute_item_score(range(dm.n_users))
+    r_rp3beta = sps.coo_matrix(r_rp3beta)
+    ssm.saveMatrix(dir,r_slim)
+else:
+    r_rp3betar_slim=ssm.readMatrix(dir)
 
 
 from Recommenders.BaseRecommender import BaseRecommender
