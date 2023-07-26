@@ -13,7 +13,11 @@ In this repo we report the various experiments made and the various evolutions o
 [Link to the official website of the challenge](https://www.kaggle.com/competitions/recommender-system-2022-challenge-polimi)
 
 ## Results
-* Ranked 16th
+
+The end result was a hybrid Recommender System formed by RP3betaRecommender and two versions of SLIMElasticNetRecommender specialized for different portions of users. ([See last submission](Daniele/Recommender/LastDance/sub_hybrid.py))
+
+We used both an implicit and an explicit matrix, normalizing the values using a dynamic Logistic function according to the item bias and user bias, see the implementation [here](Daniele/Utils/MatrixManipulation.py) of the funciton explicitURM.
+
 * MAP@10 = 0.06021 on Kaggle's public leaderboard
 
 ## Team
