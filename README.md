@@ -14,7 +14,7 @@ In this repo we report the various experiments made and the various evolutions o
 
 ## Results
 
-The end result was a hybrid Recommender System formed by RP3betaRecommender and two versions of SLIMElasticNetRecommender specialized for different portions of users. ([See last submission](Daniele/Recommenders/LastDance/sub_hybrid.py))
+The end result was a hybrid Recommender System formed by RP3betaRecommender and two versions of SLIMElasticNetRecommender specialized for different portions of users. ([See last submission](Daniele/Recommenders/LastDence/sub_hybrid.py))
 
 We used both an implicit and an explicit matrix, normalizing the values using a dynamic Logistic function according to the item bias and user bias, see the implementation [here](Daniele/Utils/MatrixManipulation.py) of the funciton explicitURM.
 
