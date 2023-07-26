@@ -1,4 +1,4 @@
-# POLIMI Recommender Systems Challenge 2018
+# POLIMI Recommender Systems Challenge 2022
 <p align="center">
   <img width="100%" src="https://files.realpython.com/media/Build-a-Recommendation-Engine-With-Collaborative-Filtering_Watermarked.451abc4ecb9f.jpg" alt="header" />
 </p>
