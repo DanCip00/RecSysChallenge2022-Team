@@ -1,1 +1,0 @@
-SearchBayesianSkopt: Resuming 'gruppo_alto' Failed, no such file exists.
