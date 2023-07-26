@@ -1,6 +1,6 @@
 # POLIMI Recommender Systems Challenge 2018
 <p align="center">
-  <img width="100%" src="https://i.imgur.com/tm9mSuM.png" alt="header" />
+  <img width="100%" src="https://files.realpython.com/media/Build-a-Recommendation-Engine-With-Collaborative-Filtering_Watermarked.451abc4ecb9f.jpg" alt="header" />
 </p>
 <p align="center">
     <img src="https://i.imgur.com/mPb3Qbd.gif" width="180" alt="Politecnico di Milano"/>
